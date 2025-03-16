@@ -177,6 +177,7 @@ class InMemoryRateLimiter(BaseRateLimiter):
             the caller should try again later.
         """
         with self._consume_lock:
+            print("Available Tokens", self.available_tokens)
             now = time.monotonic()
 
             # initialize on first call to avoid a burst
@@ -197,7 +198,7 @@ class InMemoryRateLimiter(BaseRateLimiter):
             if self.available_tokens >= 1:
                 self.available_tokens -= 1
                 return True
-            print("Available Tokens", self.available_tokens)
+            
             return False
 
     def acquire(self, *, blocking: bool = True) -> bool:
