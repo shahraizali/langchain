@@ -184,7 +184,7 @@ class InMemoryRateLimiter(BaseRateLimiter):
                 self.last = now
 
             elapsed = now - self.last
-
+            
             if elapsed * self.requests_per_second >= 1:
                 self.available_tokens += elapsed * self.requests_per_second
                 self.last = now
@@ -197,7 +197,7 @@ class InMemoryRateLimiter(BaseRateLimiter):
             if self.available_tokens >= 1:
                 self.available_tokens -= 1
                 return True
-
+            print("Available Tokens", self.available_tokens)
             return False
 
     def acquire(self, *, blocking: bool = True) -> bool:
@@ -219,7 +219,7 @@ class InMemoryRateLimiter(BaseRateLimiter):
         """
         if not blocking:
             return self._consume()
-
+        
         while not self._consume():
             time.sleep(self.check_every_n_seconds)
         return True
